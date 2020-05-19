@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.androidsdk.WidgetClient;
+import com.example.androidsdk.WidgetsCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,11 +19,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final WidgetClient client = new WidgetClient();
+
         View widgetListButton = findViewById(R.id.widgetListButton);
         widgetListButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Log.d("test", "button ");
+                client.getWidgets(new WidgetsCallback() {
+                    @Override
+                    public void onSuccess(okhttp3.Response response) {
+                        Log.d("test", response.toString());
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("test", e.toString());
+                    }
+                });
             }
         });
 
